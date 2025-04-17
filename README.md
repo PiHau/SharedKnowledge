@@ -1,4 +1,4 @@
-# ShareKnowledge
+# SharedKnowledge
 
 Plateforme web de participation citoyenne **développée dans le cadre d’un mémoire de master** consacré à la participation numérique en urbanisme dans l’agglomération Lausanne‑Morges.
 
