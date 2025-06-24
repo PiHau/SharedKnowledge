@@ -1,0 +1,361 @@
+/* ==========================================================================
+   VARIABLES & BASE
+   ========================================================================== */
+:root {
+  /* Nuances de gris */
+  --red1:   #dd8b8b;
+  --gray-100:  #f1f5f9;
+  --gray-200:  #e2e8f0;
+  --gray-300:  #cbd5e1;
+  --gray-500:  #a6a8aa;
+  --gray-700:  #5a5c5f;
+  --white:     #ffffff;
+
+  /* Ombres & hauteurs globales */
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, .05);
+  --footer-h:    48px;
+
+  /* Police similaire au logo */
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Reset & structure de base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--gray-50);
+  color: var(--gray-700);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+}
+a {
+  color: var(--gray-700);
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   HEADER & FOOTER
+   ========================================================================== */
+.sk-header,
+.sk-footer {
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, .85);
+  box-shadow: 0 1px 0 var(--gray-200);
+}
+
+/* HEADER */
+.sk-header {
+  flex: 0 0 auto;
+  justify-content: space-between;
+  padding: .4rem;               /* double de l'ancien .2rem */
+  margin: .4rem;                /* marge autour */
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+/* Barre très claire sous le logo/container */
+.sk-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 4px;
+  background: var(--gray-200);
+}
+
+/* LOGOS */
+.sk-logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.sk-logo img {
+  height: auto;
+  width: auto;
+  max-height: 93px;             /* taille réduite propre */
+}
+
+/* FOOTER */
+.sk-footer {
+  flex: 0 0 var(--footer-h);
+  justify-content: center;
+  border-top: 1px solid var(--gray-200);
+  font-size: .875rem;
+  color: var(--gray-500);
+}
+
+/* ==========================================================================
+   MISE EN PAGE PRINCIPALE
+   ========================================================================== */
+.sk-main {
+  flex: 1 1 auto;
+  display: flex;
+}
+
+#project-list {
+  flex: .6;
+  min-width: 100px;
+  background: var(--white);
+  border-right: 1px solid var(--gray-200);
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.sk-map-container {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+#map {
+  flex: 2;
+  width: 100%;
+}
+#sidebar {
+  flex: 1;
+  min-width: 200px;
+}
+
+#info {
+  flex: 1;
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+  padding: clamp(2rem, 2vw, 2rem);
+  overflow-y: auto;
+  text-align: justify;
+  color: rgba(51, 65, 85, .85);
+  font-size: .95rem;
+}
+#info h2 {
+  font-size: 1.5rem;
+  margin: 0 0 .8rem;
+  color: var(--gray-700);
+}
+#info p,
+#info li {
+  opacity: .9;
+}
+
+@media(max-width: 768px) {
+  .sk-main {
+    flex-direction: column;
+  }
+  #project-list,
+  #sidebar {
+    width: 100%;
+    height: 200px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .sk-map-container {
+    height: calc(100% - 400px);
+  }
+  #map {
+    height: 66%;
+  }
+  #info {
+    height: 34%;
+  }
+}
+
+/* ==========================================================================
+   MODAL (DISCLAIMER)
+   ========================================================================== */
+.sk-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, .6);
+  backdrop-filter: blur(5px);
+  z-index: 2000;
+  opacity: 0;
+}
+.sk-modal {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  width: 92%;
+  max-width: 600px;
+  padding: 1.75rem 1.5rem;
+  box-shadow: var(--shadow-soft);
+  transform: scale(.9);
+}
+.sk-modal h2 {
+  font-size: 1.6rem;
+  color: var(--gray-700);
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+.sk-modal section {
+  margin-bottom: 1.25rem;
+}
+.sk-modal p,
+.sk-modal ul {
+  color: var(--gray-700);
+  opacity: .85;
+}
+.sk-modal ul {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+.sk-scroll {
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   CONTROLES EMAIL
+   ========================================================================== */
+.sk-controls {
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0 1.5rem;
+}
+.sk-controls input {
+  flex: 1;
+  padding: .5rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  font-size: 1rem;
+  background: var(--gray-100);
+}
+.sk-btn-add,
+.sk-btn-no {
+  padding: .5rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color .2s;
+}
+.sk-btn-add {
+  background: var(--gray-700);
+  color: var(--white);
+}
+.sk-btn-add:hover {
+  background: var(--gray-500);
+}
+.sk-btn-no {
+  background: var(--white);
+  color: var(--gray-700);
+  border: 1px solid var(--gray-700);
+}
+.sk-btn-no:hover {
+  background: var(--gray-200);
+}
+.sk-accept {
+  display: block;
+  margin: 0 auto 1rem;
+  padding: .7rem 2.5rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--gray-700);
+  color: var(--white);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color .2s;
+}
+.sk-accept:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   SIDEBAR (QUESTIONNAIRE)
+   ========================================================================== */
+.sk-sidebar {
+  width: 320px;
+  max-width: 85vw;
+  height: 100%;
+  background: var(--white);
+  border-left: 1px solid var(--gray-200);
+  padding: 1rem;
+  overflow-y: auto;
+  box-shadow: -2px 0 6px rgba(0, 0, 0, .05);
+  z-index: 100;
+  position: relative;
+}
+.sk-sidebar[hidden] { display: none; }
+.sk-sidebar-close {
+  position: absolute;
+  top: .5rem;
+  right: .75rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--gray-500);
+}
+.sk-sidebar-close:hover { color: var(--gray-700); }
+.sk-sidebar h2 { margin: 0 0 1rem; color: var(--gray-700); }
+.sk-zone-form label { display: block; margin: .5rem 0 .25rem; }
+.sk-likert { margin-bottom: 1rem; }
+.sk-likert label {
+  display: inline-flex;
+  align-items: center;
+  margin-right: .5rem;
+  cursor: pointer;
+  font-size: .875rem;
+  opacity: .85;
+}
+.sk-likert input { margin-right: .25rem; }
+.sk-zone-form textarea {
+  width: 100%;
+  padding: .5rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  resize: vertical;
+  margin: .25rem 0 1rem;
+  background: var(--gray-100);
+}
+.sk-zone-form button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: .6rem;
+  background: var(--gray-700);
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color .2s;
+}
+.sk-zone-form button[type="submit"]:hover { background: var(--gray-500); }
+
+/* ==========================================================================
+   TOOLTIPS & LEAFLET CONTROLS
+   ========================================================================== */
+.sk-tooltip {
+  background: var(--gray-700) !important;
+  color: var(--white) !important;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: .75rem;
+  line-height: 1.2;
+}
+.leaflet-control-custom button:hover {
+  background: var(--gray-200);
+  cursor: pointer;
+}
+/* Override styles Leaflet pour polygon et polylines */
+.leaflet-interactive {
+  fill: var(--red1) !important;
+  fill-opacity: 0.6;            /* ajustez l’opacité si besoin */
+  stroke: var(--red1) !important;
+  stroke-width: 1px;
+}

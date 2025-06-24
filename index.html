@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SharedKnowledge</title>
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    defer
+  ></script>
+
+  <!-- Styles principaux -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- EN-TÊTE : logos aux deux extrémités -->
+  <header class="sk-header">
+    <!-- Logo word-mark -->
+    <a href="/" class="sk-logo sk-logo-1" aria-label="Accueil">
+      <img
+        src="png/logo1.png"
+        alt="SharedKnowledge – Plateforme d’urbanisme participatif"
+      />
+    </a>
+  </header>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="sk-main">
+
+    <!-- Colonne gauche : liste des projets -->
+    <aside id="project-list">
+      <h2>Projets</h2>
+      <ul id="projects">
+        <li data-id="1" data-file="BHNS.geojson">BHNS</li>
+        <li data-id="2" data-file="blecherette.geojson">Blecherette</li>
+        <li data-id="3" data-file="corsy_conversion.geojson">Corsy-Conversion</li>
+        <li data-id="4" data-file="est_laus.geojson">Est Lausannois</li>
+        <li data-id="5" data-file="im_dir_tp.geojson">IDTP-OL</li>
+        <li data-id="6" data-file="M3.geojson">M3</li>
+        <li data-id="7" data-file="malley.geojson">Malley</li>
+        <li data-id="8" data-file="pully_centre.geojson">Pully Centre</li>
+        <li data-id="9" data-file="tram.geojson">Tramway Lausannois T1</li>
+      </ul>
+    </aside>
+
+    <!-- Carte + panneau info -->
+    <div class="sk-map-container">
+      <div id="map" class="sk-map"></div>
+
+      <div id="info" class="sk-info">
+        <h2>Contexte – Projet d’agglomération Lausanne-Morges (PALM)</h2>
+        <p>
+          Avec quelque 456 000 habitants estimés fin 2024, l’agglomération
+          lausannoise poursuit une croissance démographique rapide. Pour éviter
+          que cette poussée ne se traduise par un étalement, la révision 2014 de
+          la Loi fédérale sur l’aménagement du territoire impose de densifier
+          « vers l’intérieur » et de réduire les zones à bâtir surdimensionnées…
+          <!-- … (texte inchangé) … -->
+        </p>
+      </div>
+    </div>
+
+    <!-- Barre latérale (questionnaire) -->
+    <aside id="sidebar" class="sk-sidebar" hidden></aside>
+
+  </main>
+
+  <!-- PIED DE PAGE -->
+  <footer class="sk-footer">© 2025 SharedKnowledge</footer>
+
+  <!-- Script principal -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
