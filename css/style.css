@@ -355,7 +355,6 @@ a {
 /* Override styles Leaflet pour polygon et polylines */
 .leaflet-interactive {
   fill: var(--red1) !important;
-  fill-opacity: 0.6;            /* ajustez l’opacité si besoin */
   stroke: var(--red1) !important;
   stroke-width: 1px;
 }

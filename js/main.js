@@ -5,8 +5,13 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 /* -----------------------------------------------------------------
    CONFIG – URL Google Forms pour la collecte d’e-mails
 ------------------------------------------------------------------ */
+
 const FORM_URL    = 'https://docs.google.com/forms/d/e/1FAIpQLSdHMVzILg1T_I0OT1CGgDybNLSr8o9i6w4oBRTUU4u9RBXD6Q/formResponse';
+
 const EMAIL_ENTRY = 'entry.1662800066';
+
+/* URL Formspree : copie celle que ton tableau de bord t’a donnée */
+const FORMSPREE_URL = 'https://formspree.io/f/mwpbrdlr';
 
 /* -----------------------------------------------------------------
    OUTILS
@@ -155,6 +160,7 @@ function showDisclaimer() {
   overlay.transition().duration(500).style('opacity',1);
   modal.transition().duration(500).style('transform','scale(1)');
 }
+
 /*Info*/
 window.openProjectInfo = function(infoObj, shortName){
   if (!infoObj){ console.warn('Infos manquantes pour', shortName); return; }
@@ -164,107 +170,134 @@ window.openProjectInfo = function(infoObj, shortName){
                 .html('')
                 .style('opacity',0);
 
-  box.append('h2')
-      .text(shortName);
+  /* ── Titre ───────────────────────────────────── */
+  box.append('h2').text(shortName);
 
+  box.append('br');                       // saut de ligne après le titre
+
+  /* ── Dates collées ───────────────────────────── */
   box.append('p')
       .attr('class','meta')
-      .html(`<strong>Date de début :</strong> ${infoObj.start || '-'}`);
+      .html(
+        `<strong>Date&nbsp;de&nbsp;début&nbsp;:</strong> ${infoObj.start || '-'} &nbsp;&nbsp; 
+         <strong>Date&nbsp;cible&nbsp;:</strong> ${infoObj.target || '-'}`
+      );
 
-  box.append('p')
-      .attr('class','meta')
-      .html(`<strong>Date cible :</strong> ${infoObj.target || '-'}`);
+  box.append('br');                       // saut de ligne après les dates
 
+  /* ── Résumé ──────────────────────────────────── */
   box.append('p')
       .attr('class','summary')
       .text(infoObj.summary || '')
       .style('white-space','pre-line');   // garde les \n éventuels
 
+  box.append('br');                       // saut de ligne après le résumé
+
+  /* ── Objectifs (bullet-list) ─────────────────── */
   const ul = box.append('ul');
   (infoObj.objectives || []).forEach(o => ul.append('li').text(o));
 
+  /* ── Liens ───────────────────────────────────── */
   const links = box.append('div').style('margin-top','1rem');
   if (infoObj.link1) links.append('a')
-        .attr('href',infoObj.link1).attr('target','_blank')
-        .text('En savoir plus').style('margin-right','1rem');
+        .attr('href', infoObj.link1).attr('target','_blank')
+        .text('Informations supplémentaires - Lien 1').style('margin-right','1rem');
   if (infoObj.link2) links.append('a')
-        .attr('href',infoObj.link2).attr('target','_blank')
-        .text('Documentation');
+        .attr('href', infoObj.link2).attr('target','_blank')
+        .text('Informations supplémentaires - Lien 2');
 
+  /* fade-in doux */
   box.transition().duration(500).style('opacity',1);
-}
+};
 
 /* -----------------------------------------------------------------
    SIDEBAR QUESTIONS (droite)
 ------------------------------------------------------------------ */
 function openSidebarForProject(id, shortName) {
   const cfg = window.questionsMap[id];
-  const side = d3.select('#sidebar').attr('hidden', null).html('').style('opacity', 0);
+  if (!cfg) { console.warn('questionsMap manquant', id); return; }
+
+  /* ---------- conteneur latéral ---------- */
+  const side = d3.select('#sidebar')
+                 .attr('hidden', null)
+                 .html('')
+                 .style('opacity', 0);
 
   side.append('button')
-    .attr('class', 'sk-sidebar-close')
-    .text('×')
-    .on('click', () => side.attr('hidden', true));
-  styleButtons(side.selectAll('button'));
+      .attr('class', 'sk-sidebar-close')
+      .text('×')
+      .on('click', () => side.attr('hidden', true));
 
+  styleButtons(side.selectAll('button'));
   side.append('h2').text(`Questions – ${shortName}`);
 
-  const form = side.append('form')
-    .attr('class', 'sk-zone-form')
-    .on('submit', function (e) {
-      e.preventDefault();
+  /* ---------- formulaire ---------- */
+  const form = side.append('form').attr('class', 'sk-zone-form');
 
-      const formData = new FormData(this);
-      const data = {
-        project: id,
-        q1: formData.get('q1'),
-        q2: formData.get('q2'),
-        q3: formData.get('q3'),
-        q4: formData.get('q4'),
-        q5: formData.get('q5'),
-        q6: '', // vide par défaut
-        comment: formData.get('commentaire')
-      };
+  cfg.questions.forEach((q, i) => {
+    form.append('label').text(q);
+    const row = form.append('div').attr('class', 'sk-likert');
+    for (let v = 1; v <= 5; v++) {
+      row.append('label')
+         .html(`<input type="radio" name="q${i + 1}" value="${v}" required> ${v}`);
+    }
+  });
 
-      fetch('https://script.google.com/macros/s/AKfycbzMC9KtVwDcXmas16ke-yOIKLNUMjZtsBG2YmK1VH3k1i4mEIwLqGyp8vYuMkW8w9F0/exec', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      .then(res => res.json())
-      .then(response => {
-        if (response.result === 'ok') {
-          alert('Merci, vos réponses ont été enregistrées !');
-          side.attr('hidden', true);
-        } else {
-          alert('Erreur lors de la soumission, veuillez réessayer.');
-        }
-      })
-      .catch(err => {
-        console.error('Erreur lors de l’envoi du formulaire:', err);
-        alert('Une erreur est survenue.');
-      });
-    });
-
-  if (cfg) {
-    cfg.questions.forEach((q, i) => {
-      form.append('label').text(q);
-      const line = form.append('div').attr('class', 'sk-likert');
-      for (let v = 1; v <= 5; v++) {
-        line.append('label').html(`<input type="radio" name="q${i + 1}" value="${v}" required> ${v}`);
-      }
-    });
-
-    form.append('label')
+  form.append('label')
       .text(cfg.commentLabel)
       .append('textarea')
       .attr('name', 'commentaire')
       .attr('rows', 3);
-  }
 
-  form.append('button').attr('type', 'submit').text('Envoyer');
+  /* ----- bouton d’envoi ----- */
+  const sendBtn = form.append('button')
+                      .attr('type', 'submit')
+                      .text('Envoyer')
+                      .node();              // DOM element
+
+  /* ---------- soumission ---------- */
+  form.on('submit', function (e) {
+    e.preventDefault();
+
+    /* validation : tout coché */
+    const fd = new FormData(this);
+    const nQ = cfg.questions.length;
+    for (let i = 1; i <= nQ; i++) {
+      if (!fd.get('q' + i)) {
+        alert(`Merci de répondre aux ${nQ} questions.`);
+        return;
+      }
+    }
+
+    /* payload x-www-form-urlencoded */
+    const payload = new URLSearchParams({ project: id });
+    for (let i = 1; i <= nQ; i++) payload.append('q' + i, fd.get('q' + i));
+    payload.append('comment', fd.get('commentaire') || '');
+
+    /* e-mail obligatoire pour Formspree : valeur réelle ou “anon@sk.local” */
+    payload.append('email', localStorage.getItem('sk_email') || 'anon@sk.local');
+
+    /* envoi silencieux : aucune erreur affichée même si Formspree répond 302/400 */
+    fetch(FORMSPREE_URL, {
+      method : 'POST',
+      mode   : 'no-cors',                       // pas de lecture de réponse → pas d’erreur CORS
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body   : payload.toString()
+    }).catch(()=>{});                          // on ignore toute exception réseau
+
+    /* feedback sur le bouton */
+    sendBtn.disabled   = true;
+    const oldTxt       = sendBtn.textContent;
+    sendBtn.textContent = 'Réponse envoyée !';
+
+    setTimeout(() => {
+      sendBtn.disabled   = false;
+      sendBtn.textContent = oldTxt;
+      side.attr('hidden', true);               // ferme la barre latérale
+    }, 1000);
+  });
+
+  /* apparition douce */
   side.transition().duration(400).style('opacity', 1);
 }
 
@@ -287,7 +320,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     qRows.forEach(r=>{
       const id = cleanId(r.id);
       window.questionsMap[id] = {
-        questions:    [r.question1,r.question2,r.question3,r.question4,r.question5],
+        questions:    [r.question1,r.question2,r.question3,r.question4,r.question5, r.question6],
         commentLabel: r.comment_label
       };
     });
