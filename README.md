@@ -36,20 +36,11 @@ Aucune création de compte n’est nécessaire ; aucune donnée personnelle n�
 
 ---
 
-## Structure du dépôt
-```
-SharedKnowledge/
-├─ frontend/   HTML, CSS, JS du client
-├─ api/        
-├─ docker/     
-└─ scripts/   
-```
-
 ---
 
 ## Valeurs et aspirations du projet
 - **Simple** : moins d’une minute pour contribuer.
-- **Transparent** : chaque contribution influence immédiatement la visualisation.
-- **Respectueux** : aucune trace nominative, e‑mail séparé et supprimé après envoi du rapport.
+- **Transparent** : chaque contribution est prise en compte et chaque contributeur reçoit un feedback.
+- **Respectueux** : aucune trace nominative, e‑mail séparé des réponses et supprimé après envoi du rapport.
 
 
