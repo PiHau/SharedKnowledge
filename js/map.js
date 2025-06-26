@@ -102,22 +102,37 @@ export default function initMap () {
   
   const radiusAt = z => Math.max(2, 0.8 * (z - 7));
 
-  fetch(`geojson_europe/${file}`)
-  .then(r => r.json())
-  .then(data => {
-    const layer = L.geoJSON(data, {
-      // ... options de style ...
-    }).addTo(map);
-    if (layer.getBounds().isValid()) {
-      map.fitBounds(layer.getBounds(), {
-        paddingTopLeft: [50, 50],
-        paddingBottomRight: [320, 50] // ajuste cette valeur selon la largeur de ta sidebar
+  fetch('geojson_europe/poi.json')
+    .then(r => r.json())
+    .then(raw => {
+      const list = Array.isArray(raw) ? raw : raw.elements ?? null;
+      if (!list) { console.warn('poi.json non reconnu'); buildSidebar(); return; }
+
+      Object.entries(poiConfig).forEach(([lbl, cfg]) => {
+        const g = L.layerGroup([], { pane:'overlayPane' });
+        list.forEach(o => {
+          const t = o.tags || {};
+          if (cfg.isShop ? !t.shop : t.amenity !== cfg.key) return;
+          const lat = o.lat ?? o.center?.lat;
+          const lon = o.lon ?? o.center?.lon;
+          if (lat == null || lon == null) return;
+          g.addLayer(
+            L.circleMarker([lat, lon], {
+              radius: radiusAt(map.getZoom()),
+              color: cfg.color,
+              weight: 1,
+              fillColor: cfg.color,
+              fillOpacity: 0.85
+            }).bindTooltip(poiTip(t), { direction:'top', offset:[0,-8] })
+          );
+        });
+        overlayLayers[lbl] = { layer: g, color: cfg.color };
       });
-    }
-    openProjectInfo(window.infosMap[id], shortName);
-    openSidebarForProject(id, shortName);
-  })
-  .catch(err => console.error(`Erreur chargement ${file} :`, err));
+
+      buildSidebar();
+      updateCircleSize(map.getZoom());
+    })
+    .catch(err => { console.error('Erreur poi.json', err); buildSidebar(); });
 
   map.on('zoomend', () => updateCircleSize(map.getZoom()));
   function updateCircleSize(z){
