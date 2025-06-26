@@ -1,22 +1,20 @@
-// js/main.js
+// =============================
+// IMPORT DES MODULES
+// =============================
 import initMap from './map.js';
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 
-/* -----------------------------------------------------------------
-   CONFIG – URL Google Forms pour la collecte d’e-mails
------------------------------------------------------------------- */
-
-const FORM_URL    = 'https://docs.google.com/forms/d/e/1FAIpQLSdHMVzILg1T_I0OT1CGgDybNLSr8o9i6w4oBRTUU4u9RBXD6Q/formResponse';
-
+// =============================
+// CONFIGURATION DES URLS
+// =============================
+const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdHMVzILg1T_I0OT1CGgDybNLSr8o9i6w4oBRTUU4u9RBXD6Q/formResponse';
 const EMAIL_ENTRY = 'entry.1662800066';
-
-/* URL Formspree : copie celle que ton tableau de bord t’a donnée */
 const FORMSPREE_URL = 'https://formspree.io/f/mwpbrdlr';
 
-/* -----------------------------------------------------------------
-   OUTILS
------------------------------------------------------------------- */
-const cleanId = v => (v ?? '').toString().trim();        // supprime espaces parasites
+// =============================
+// OUTILS / UTILITAIRES
+// =============================
+const cleanId = v => (v ?? '').toString().trim();
 
 function styleButtons(selection) {
   selection
@@ -36,11 +34,10 @@ function styleButtons(selection) {
     });
 }
 
-/* -----------------------------------------------------------------
-   DISCLAIMER (modal)
------------------------------------------------------------------- */
+// =============================
+// AFFICHAGE DE LA MODALE D’INFORMATION (DISCLAIMER)
+// =============================
 function showDisclaimer() {
-
   const overlay = d3.select('body')
     .append('div')
     .attr('class','sk-overlay')
@@ -52,7 +49,6 @@ function showDisclaimer() {
 
   modal.append('h2').text('Informations sur le projet');
 
-  /* --- contenu scrollable -------------------------------------- */
   const scroll = modal.append('div')
     .attr('class','sk-scroll')
     .style('max-height','60vh')
@@ -61,32 +57,38 @@ function showDisclaimer() {
 
   scroll.append('section').html(`
     <h3>Description du projet</h3>
-    <p><strong>ShareKnowledge</strong> est un prototype cartographique de participation
+ <p><strong>SharedKnowledge</strong> est un prototype cartographique de participation
     citoyenne, développé dans le cadre d’un mémoire de master en
-    <em>Analyse spatiale et systèmes complexes</em> (UNIL). Il explore l’intérêt
-    d’un dispositif géolocalisé pour impliquer les habitants dans l’urbanisme.</p>
+    <em>Analyse spatiale et systèmes complexes</em> (UNIL).<br><br>
+    <b>Le but de ce projet est de rendre l'urbanisme accessible, dans sa forme la plus simple, à l'ensemble de la population,</b>
+    en rassemblant les informations nécessaires et contextuelles pour la compréhension des projets et de leur inscription dans l'espace régional.<br>
+    La plateforme est conçue pour être adaptée aussi bien aux novices qu’aux personnes qui souhaitent approfondir&nbsp;: accès à des liens vers la documentation officielle, cartes thématiques et informations complémentaires.<br><br>
+    Le projet vise à explorer si une plateforme numérique simple et intuitive peut faciliter la participation citoyenne dans l’urbanisme.
+    </p>
   `);
 
   scroll.append('section').html(`
     <h3>Utilisation</h3>
-    <ul>
+      <ul>
       <li>3 notes Likert + 1 phrase affirmative (max. 100 mots).</li>
       <li>Aucune question ouverte : les phrases sont analysées par text-mining.</li>
       <li>L’adresse e-mail est facultative (pour recevoir le rapport agrégé).</li>
+      <li>Pour chaque projet, vous pouvez accéder à la documentation et à des cartes supplémentaires.</li>
     </ul>
   `);
 
   scroll.append('section').html(`
     <h3>Résultats</h3>
-    <p>Les notes sont agrégées et les phrases passée à un traitement de
-    texte miné. Un rapport PDF sera envoyé aux participants ayant fourni
-    leur e-mail.</p>
+    <p>Les notes sont agrégées, les phrases sont lues et analysées (SpaCy). Un rapport PDF sera envoyé aux participants ayant fourni
+    leur e-mail.<br>
+    Cette expérimentation sert à évaluer le potentiel d’une telle plateforme pour encourager la participation et la compréhension des projets d’urbanisme.</p>
+  
   `);
 
   scroll.append('section').html(`
     <h3>Contexte scientifique</h3>
     <p>Il s’agit d’un projet académique : les données ne seront pas publiées
-    individuellement, seulement analysées dans un cadre de recherche.</p>
+    individuellement, seulement analysées dans un cadre de recherche. Les réponses n'influeront pas les décisions, elles servent à explorer "ce qu'il est possible de faire".</p>
   `);
 
   scroll.append('section').html(`
@@ -96,7 +98,7 @@ function showDisclaimer() {
           n’est stockée avec vos réponses.</li>
       <li>Les adresses sont conservées dans une feuille Google Sheets privée,
           séparée des résultats.</li>
-      <li>Aucune exploitation commerciale.</li>
+      <li>Aucune exploitation des données personnelles, en dehors de l'envoi du rapport.</li>
       <li>Code source : <a href="https://github.com/PiHau/SharedKnowledge"
           target="_blank">GitHub</a>.</li>
     </ul>
@@ -107,15 +109,14 @@ function showDisclaimer() {
     <p><a href="mailto:pierre.hauptmann@unil.ch">pierre.hauptmann@unil.ch</a></p>
   `);
 
-  /* --- zone e-mail + boutons ----------------------------------- */
   const controls = modal.append('div').attr('class','sk-controls');
 
   const emailInput = controls.append('input')
     .attr('type','email')
     .attr('class','sk-email-input')
     .attr('placeholder','votre@adresse.ch');
-
-  // champ invisible anti-bot
+    
+/* Piege pour bot*/
   controls.append('input')
     .attr('type','email')
     .attr('name','email2')
@@ -156,12 +157,13 @@ function showDisclaimer() {
       .on('end',()=>overlay.remove());
   });
 
-  /* animation d’apparition */
   overlay.transition().duration(500).style('opacity',1);
   modal.transition().duration(500).style('transform','scale(1)');
 }
 
-/*Info*/
+// =============================
+// AFFICHAGE INFOS PROJET
+// =============================
 window.openProjectInfo = function(infoObj, shortName){
   if (!infoObj){ console.warn('Infos manquantes pour', shortName); return; }
 
@@ -170,34 +172,22 @@ window.openProjectInfo = function(infoObj, shortName){
                 .html('')
                 .style('opacity',0);
 
-  /* ── Titre ───────────────────────────────────── */
   box.append('h2').text(shortName);
-
-  box.append('br');                       // saut de ligne après le titre
-
-  /* ── Dates collées ───────────────────────────── */
+  box.append('br');
   box.append('p')
       .attr('class','meta')
       .html(
         `<strong>Date&nbsp;de&nbsp;début&nbsp;:</strong> ${infoObj.start || '-'} &nbsp;&nbsp; 
          <strong>Date&nbsp;cible&nbsp;:</strong> ${infoObj.target || '-'}`
       );
-
-  box.append('br');                       // saut de ligne après les dates
-
-  /* ── Résumé ──────────────────────────────────── */
+  box.append('br');
   box.append('p')
       .attr('class','summary')
       .text(infoObj.summary || '')
-      .style('white-space','pre-line');   // garde les \n éventuels
-
-  box.append('br');                       // saut de ligne après le résumé
-
-  /* ── Objectifs (bullet-list) ─────────────────── */
+      .style('white-space','pre-line');
+  box.append('br');
   const ul = box.append('ul');
   (infoObj.objectives || []).forEach(o => ul.append('li').text(o));
-
-  /* ── Liens ───────────────────────────────────── */
   const links = box.append('div').style('margin-top','1rem');
   if (infoObj.link1) links.append('a')
         .attr('href', infoObj.link1).attr('target','_blank')
@@ -205,19 +195,16 @@ window.openProjectInfo = function(infoObj, shortName){
   if (infoObj.link2) links.append('a')
         .attr('href', infoObj.link2).attr('target','_blank')
         .text('Informations supplémentaires - Lien 2');
-
-  /* fade-in doux */
   box.transition().duration(500).style('opacity',1);
 };
 
-/* -----------------------------------------------------------------
-   SIDEBAR QUESTIONS (droite)
------------------------------------------------------------------- */
+// =============================
+// SIDEBAR DES QUESTIONS (DROITE)
+// =============================
 function openSidebarForProject(id, shortName) {
   const cfg = window.questionsMap[id];
   if (!cfg) { console.warn('questionsMap manquant', id); return; }
 
-  /* ---------- conteneur latéral ---------- */
   const side = d3.select('#sidebar')
                  .attr('hidden', null)
                  .html('')
@@ -231,7 +218,6 @@ function openSidebarForProject(id, shortName) {
   styleButtons(side.selectAll('button'));
   side.append('h2').text(`Questions – ${shortName}`);
 
-  /* ---------- formulaire ---------- */
   const form = side.append('form').attr('class', 'sk-zone-form');
 
   cfg.questions.forEach((q, i) => {
@@ -249,17 +235,13 @@ function openSidebarForProject(id, shortName) {
       .attr('name', 'commentaire')
       .attr('rows', 3);
 
-  /* ----- bouton d’envoi ----- */
   const sendBtn = form.append('button')
                       .attr('type', 'submit')
                       .text('Envoyer')
-                      .node();              // DOM element
+                      .node();
 
-  /* ---------- soumission ---------- */
   form.on('submit', function (e) {
     e.preventDefault();
-
-    /* validation : tout coché */
     const fd = new FormData(this);
     const nQ = cfg.questions.length;
     for (let i = 1; i <= nQ; i++) {
@@ -268,24 +250,18 @@ function openSidebarForProject(id, shortName) {
         return;
       }
     }
-
-    /* payload x-www-form-urlencoded */
     const payload = new URLSearchParams({ project: id });
     for (let i = 1; i <= nQ; i++) payload.append('q' + i, fd.get('q' + i));
     payload.append('comment', fd.get('commentaire') || '');
-
-    /* e-mail obligatoire pour Formspree : valeur réelle ou “anon@sk.local” */
     payload.append('email', localStorage.getItem('sk_email') || 'anon@sk.local');
 
-    /* envoi silencieux : aucune erreur affichée même si Formspree répond 302/400 */
     fetch(FORMSPREE_URL, {
       method : 'POST',
-      mode   : 'no-cors',                       // pas de lecture de réponse → pas d’erreur CORS
+      mode   : 'no-cors',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body   : payload.toString()
-    }).catch(()=>{});                          // on ignore toute exception réseau
+    }).catch(()=>{});
 
-    /* feedback sur le bouton */
     sendBtn.disabled   = true;
     const oldTxt       = sendBtn.textContent;
     sendBtn.textContent = 'Réponse envoyée !';
@@ -293,29 +269,25 @@ function openSidebarForProject(id, shortName) {
     setTimeout(() => {
       sendBtn.disabled   = false;
       sendBtn.textContent = oldTxt;
-      side.attr('hidden', true);               // ferme la barre latérale
+      side.attr('hidden', true);
     }, 1000);
   });
 
-  /* apparition douce */
   side.transition().duration(400).style('opacity', 1);
 }
 
-
-/* -----------------------------------------------------------------
-   ENTRÉE PRINCIPALE
------------------------------------------------------------------- */
+// =============================
+// ENTRÉE PRINCIPALE : INITIALISATION DU SITE
+// =============================
 window.addEventListener('DOMContentLoaded',()=>{
 
-  const map = initMap();   // ─ initialise Leaflet immédiatement
+  const map = initMap();
 
-  /* Charge CSV questions + infos puis only THEN active l’IU */
   Promise.all([
     d3.csv('csv/questions.csv'),
     d3.csv('csv/infos.csv')
   ]).then(([qRows,iRows])=>{
 
-    /* 1. Maps en mémoire -------------------------------------------------------- */
     window.questionsMap = {};
     qRows.forEach(r=>{
       const id = cleanId(r.id);
@@ -338,7 +310,6 @@ window.addEventListener('DOMContentLoaded',()=>{
       };
     });
 
-    /* 2. Liste de projets ------------------------------------------------------- */
     const listItems = d3.selectAll('#projects li');
     styleButtons(listItems);
 
@@ -348,29 +319,50 @@ window.addEventListener('DOMContentLoaded',()=>{
       const file      = d3.select(this).attr('data-file');
       const shortName = d3.select(this).text();
 
-      /* highlight ------------------------------------------------------------- */
       listItems.classed('active',false).style('background-color',null);
       d3.select(this).classed('active',true).style('background-color','var(--gray-50)');
 
-      /* purge des GeoJSON précédents ------------------------------------------ */
       map.eachLayer(l => { if(l.feature) map.removeLayer(l); });
 
-      /* chargement nouveau GeoJSON -------------------------------------------- */
-      fetch(`geojson_europe/${file}`)
-        .then(r => r.json())
-        .then(data => {
-          const layer = L.geoJSON(data,{ style:{color:'var(--accent)',weight:2,fillOpacity:0.3} }).addTo(map);
-          if(layer.getBounds().isValid()) map.fitBounds(layer.getBounds().pad(0.2));
+         // ... tout ton code d'avant ...
 
-          /* mise à jour info + questions ------------------------------------ */
-          openProjectInfo(window.infosMap[id], shortName);
-          openSidebarForProject(id, shortName);
-        })
-        .catch(err => console.error(`Erreur chargement ${file} :`, err));
-    });
+ 
+  fetch(`geojson_europe/${file}`)
+  .then(r => r.json())
+  .then(data => {
+    const layer = L.geoJSON(data, {
+      style: function(feature) {
+        // Pour les lignes
+        if (
+          feature.geometry.type === "LineString" ||
+          feature.geometry.type === "MultiLineString"
+        ) {
+          return {
+            color: '#e90808',     // ← Rouge vif (contour)
+            weight: 2,
+            fill: false,
+            fillOpacity: 0
+          };
+        }
+        // Pour les polygones
+        return {
+          color: '#e90808',      // ← Rouge vif (contour)
+          fillColor: '#e90808',  // ← Rouge vif (remplissage)
+          weight: 2,
+          fillOpacity: 0.3
+        };
+      }
+    }).addTo(map);
 
-    /* 3. disclaimer ------------------------------------------------------------ */
-    showDisclaimer();
+    if (layer.getBounds().isValid()) {
+      map.fitBounds(layer.getBounds().pad(0.2));
+    }
+    openProjectInfo(window.infosMap[id], shortName);
+    openSidebarForProject(id, shortName);
   })
+  .catch(err => console.error(`Erreur chargement ${file} :`, err));
+ }); 
+    showDisclaimer();
+  }) 
   .catch(err => console.error('Erreur chargement CSV :', err));
-});
+}); 

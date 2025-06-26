@@ -1,41 +1,39 @@
 <!doctype html>
 <html lang="fr">
 <head>
+  <!-- ===========================
+       EN-TÊTE DU DOCUMENT
+  ============================ -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>SharedKnowledge</title>
 
   <!-- Leaflet -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    defer
-  ></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 
   <!-- Styles principaux -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
-
-  <!-- EN-TÊTE : logos aux deux extrémités -->
+  <!-- ===========================
+       EN-TÊTE : LOGOS ET NAVIGATION
+  ============================ -->
   <header class="sk-header">
-    <!-- Logo word-mark -->
     <a href="/" class="sk-logo sk-logo-1" aria-label="Accueil">
-      <img
-        src="png/logo1.png"
-        alt="SharedKnowledge – Plateforme d’urbanisme participatif"
-      />
+      <img src="png/logo1.png" alt="SharedKnowledge – Plateforme d’urbanisme participatif" />
     </a>
   </header>
 
-  <!-- CONTENU PRINCIPAL -->
+  <!-- ===========================
+       CONTENU PRINCIPAL
+  ============================ -->
   <main class="sk-main">
 
-    <!-- Colonne gauche : liste des projets -->
+    <!-- ===========================
+         COLONNE GAUCHE : LISTE DES PROJETS
+    ============================ -->
     <aside id="project-list">
       <h2>Projets</h2>
       <ul id="projects">
@@ -51,10 +49,11 @@
       </ul>
     </aside>
 
-    <!-- Carte + panneau info -->
+    <!-- ===========================
+         CARTE + PANNEAU INFO
+    ============================ -->
     <div class="sk-map-container">
       <div id="map" class="sk-map"></div>
-
       <div id="info" class="sk-info">
         <h2>Contexte – Projet d’agglomération Lausanne-Morges (PALM)</h2>
         <p>
@@ -68,15 +67,21 @@
       </div>
     </div>
 
-    <!-- Barre latérale (questionnaire) -->
+    <!-- ===========================
+         BARRE LATÉRALE : QUESTIONNAIRE
+    ============================ -->
     <aside id="sidebar" class="sk-sidebar" hidden></aside>
 
   </main>
 
-  <!-- PIED DE PAGE -->
+  <!-- ===========================
+       PIED DE PAGE
+  ============================ -->
   <footer class="sk-footer">© 2025 SharedKnowledge - Pierre Hauptmann, UNIL, FGSE</footer>
 
-  <!-- Script principal -->
+  <!-- ===========================
+       SCRIPT PRINCIPAL
+  ============================ -->
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

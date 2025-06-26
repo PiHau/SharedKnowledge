@@ -2,24 +2,20 @@
    VARIABLES & BASE
    ========================================================================== */
 :root {
-  /* Nuances de gris */
   --red1:   #dd8b8b;
-  --gray-100:  #f1f5f9;
+  --red2:  #e90808;
   --gray-200:  #e2e8f0;
   --gray-300:  #cbd5e1;
   --gray-500:  #a6a8aa;
   --gray-700:  #5a5c5f;
   --white:     #ffffff;
 
-  /* Ombres & hauteurs globales */
   --shadow-soft: 0 4px 20px rgba(0, 0, 0, .05);
   --footer-h:    48px;
 
-  /* Police similaire au logo */
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* Reset & structure de base */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -54,18 +50,16 @@ a {
   box-shadow: 0 1px 0 var(--gray-200);
 }
 
-/* HEADER */
 .sk-header {
   flex: 0 0 auto;
   justify-content: space-between;
-  padding: .4rem;               /* double de l'ancien .2rem */
-  margin: .4rem;                /* marge autour */
+  padding: .4rem;
+  margin: .4rem;
   position: sticky;
   top: 0;
   z-index: 999;
 }
 
-/* Barre très claire sous le logo/container */
 .sk-header::after {
   content: "";
   position: absolute;
@@ -76,7 +70,6 @@ a {
   background: var(--gray-200);
 }
 
-/* LOGOS */
 .sk-logo {
   display: flex;
   align-items: center;
@@ -85,10 +78,9 @@ a {
 .sk-logo img {
   height: auto;
   width: auto;
-  max-height: 93px;             /* taille réduite propre */
+  max-height: 93px;
 }
 
-/* FOOTER */
 .sk-footer {
   flex: 0 0 var(--footer-h);
   justify-content: center;
@@ -128,6 +120,9 @@ a {
   min-width: 200px;
 }
 
+/* ==========================================================================
+   FIXE LE PANNEAU INFO EN HAUT
+   ========================================================================== */
 #info {
   flex: 1;
   background: var(--white);
@@ -137,11 +132,18 @@ a {
   text-align: justify;
   color: rgba(51, 65, 85, .85);
   font-size: .95rem;
+  position: relative;
 }
 #info h2 {
   font-size: 1.5rem;
   margin: 0 0 .8rem;
   color: var(--gray-700);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--white);
+  padding-bottom: .2em;
+  box-shadow: 0 2px 8px -6px #bbb;
 }
 #info p,
 #info li {
@@ -188,7 +190,7 @@ a {
   border: 1px solid var(--gray-200);
   border-radius: 10px;
   width: 92%;
-  max-width: 600px;
+  max-width: 800px;
   padding: 1.75rem 1.5rem;
   box-shadow: var(--shadow-soft);
   transform: scale(.9);
@@ -352,9 +354,24 @@ a {
   background: var(--gray-200);
   cursor: pointer;
 }
-/* Override styles Leaflet pour polygon et polylines */
+
+/* ==========================================================================
+   LEAFLET VECTOR FIX
+   ========================================================================== */
+
+/* Polygones: laisse le JS gérer le style (pas de fill !important) */
+path.leaflet-interactive[fill-rule] {
+  /* pas de fill forcé */
+}
+
+/* Polylines: pas de remplissage, juste bordure (laisse le JS gérer la couleur) */
+path.leaflet-interactive:not([fill-rule]) {
+  fill: none;
+  /* couleur JS */
+}
+
+/* Par défaut, laisse la largeur du trait à 1px (ou JS si défini) */
 .leaflet-interactive {
-  fill: var(--red1) !important;
-  stroke: var(--red1) !important;
   stroke-width: 1px;
 }
+

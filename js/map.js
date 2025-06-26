@@ -1,20 +1,18 @@
-// js/map.js
-// -----------------------------------------------------------------------------
-// Carte Leaflet + WMS + POI (JSON “plat”)
-// • Cercles dont le rayon suit le zoom
-// • Sidebar fermée par défaut + curseurs d’opacité alignés (gris)
-// • Bouton ☰ plus grand, toujours visible
-// • Nouvelle couche : Affectation du sol (Arealstatistik BFS) + légende PNG
-// -----------------------------------------------------------------------------
+// =============================
+// INITIALISATION DE LA CARTE LEAFLET
+// =============================
 export default function initMap () {
 
-  /* 1. Carte -------------------------------------------------------------- */
+  // =============================
+  // CRÉATION DE LA CARTE
+  // =============================
   const map = L.map('map', { center:[46.52, 6.63], zoom:12 });
   map.createPane('overlayPane');
   map.getPane('overlayPane').style.zIndex = 650;
 
-  /* 2. Fonds -------------------------------------------------------------- */
-  /* 2. Fonds -------------------------------------------------------------- */
+  // =============================
+  // FONDS DE CARTE
+  // =============================
   const baseLayers = {
     'CartoDB Positron': L.tileLayer(
       'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
@@ -42,7 +40,9 @@ export default function initMap () {
     )
   };
 
-  /* 3. Overlays WMS fixes ------------------------------------------------- */
+  // =============================
+  // COUCHES WMS (OVERLAYS FIXES)
+  // =============================
   const overlayLayers = {
     'Limites communales': {
       layer: L.tileLayer.wms('https://wms.geo.admin.ch/', {
@@ -62,16 +62,17 @@ export default function initMap () {
         transparent:true,format:'image/png',version:'1.3.0',pane:'overlayPane'
       }), color:null
     },
-    /* ── nouvelle couche : Arealstatistik (BFS) ─────────────────────────── */
     'Affectation du sol': {
       layer: L.tileLayer.wms('https://wms.geo.admin.ch/', {
-        layers:'ch.bfs.arealstatistik-bodenbedeckung',   // land-cover / land-use
+        layers:'ch.bfs.arealstatistik-bodenbedeckung',
         transparent:true,format:'image/png',version:'1.3.0',pane:'overlayPane'
       }), color:null
     }
   };
 
-  /* 4. Légendes ----------------------------------------------------------- */
+  // =============================
+  // LÉGENDES DES COUCHES
+  // =============================
   const bauzonenLegend = L.control({ position:'bottomright' });
   bauzonenLegend.onAdd = () => {
     const d = L.DomUtil.create('div','legend');
@@ -88,14 +89,18 @@ export default function initMap () {
     return d;
   };
 
-  /* 5. POI ---------------------------------------------------------------- */
+  // =============================
+  // POINTS D’INTÉRÊT (POI) — RESTAURANTS, CAFÉS, ETC. 
+  // COULEUR UNIQUE POUR CHAQUE TYPE + PETIT RAYON
+  // =============================
   const poiConfig = {
-    'Restaurants': { key:'restaurant', color:'#e74c3c' },
-    'Cafés'      : { key:'cafe',       color:'#9b59b6' },
-    'Bars / pubs': { key:'bar',        color:'#f39c12' },
-    'Magasins'   : { key:'shop',       color:'#2980b9', isShop:true }
+    'Restaurants': { key:'restaurant', color:'#ff5252' },   // rouge
+    'Cafés'      : { key:'cafe',       color:'#7c40ff' },   // violet
+    'Bars / pubs': { key:'bar',        color:'#00b894' },   // vert
+    'Magasins'   : { key:'shop',       color:'#0099e5', isShop:true } // bleu
   };
-  const radiusAt = z => Math.max(4, z-6);
+  
+  const radiusAt = z => Math.max(2, 0.8 * (z - 7));
 
   fetch('geojson_europe/poi.json')
     .then(r => r.json())
@@ -103,7 +108,7 @@ export default function initMap () {
       const list = Array.isArray(raw) ? raw : raw.elements ?? null;
       if (!list) { console.warn('poi.json non reconnu'); buildSidebar(); return; }
 
-      Object.entries(poiConfig).forEach(([lbl,cfg]) => {
+      Object.entries(poiConfig).forEach(([lbl, cfg]) => {
         const g = L.layerGroup([], { pane:'overlayPane' });
         list.forEach(o => {
           const t = o.tags || {};
@@ -112,14 +117,16 @@ export default function initMap () {
           const lon = o.lon ?? o.center?.lon;
           if (lat == null || lon == null) return;
           g.addLayer(
-            L.circleMarker([lat,lon], {
+            L.circleMarker([lat, lon], {
               radius: radiusAt(map.getZoom()),
-              color: cfg.color, weight:1,
-              fillColor: cfg.color, fillOpacity:0.9
+              color: cfg.color,
+              weight: 1,
+              fillColor: cfg.color,
+              fillOpacity: 0.85
             }).bindTooltip(poiTip(t), { direction:'top', offset:[0,-8] })
           );
         });
-        overlayLayers[lbl] = { layer:g, color:cfg.color };
+        overlayLayers[lbl] = { layer: g, color: cfg.color };
       });
 
       buildSidebar();
@@ -136,7 +143,9 @@ export default function initMap () {
     });
   }
 
-  /* 6. Sidebar ------------------------------------------------------------ */
+  // =============================
+  // CONSTRUCTION DE LA SIDEBAR
+  // =============================
   function buildSidebar(){
     const old = document.querySelector('.sk-sidebar.leaflet-control');
     if (old) old.remove();
@@ -149,20 +158,17 @@ export default function initMap () {
         overflowY:'auto',fontSize:'.9rem',display:'none'
       });
 
-      /* Fonds */
       c.innerHTML = '<strong>Fonds de carte</strong><br>';
       Object.keys(baseLayers).forEach((n,i)=>{
         c.innerHTML += `<label><input type="radio" name="base" value="${n}" ${i===0?'checked':''}/> ${n}</label><br>`;
       });
 
-      /* Données */
       c.innerHTML += '<br><strong>Données</strong><br>';
       Object.entries(overlayLayers).forEach(([n,o])=>{
         const bullet = o.color ? `<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${o.color};margin-right:4px;"></span>` : '';
         c.innerHTML += `<label><input type="checkbox" data-ov="${n}"/> ${bullet}${n}</label><br>`;
       });
 
-      /* Curseurs d’opacité */
       c.innerHTML += `
         <hr><strong>Transparence</strong><br>
         <div style="display:flex;align-items:center;margin-bottom:4px">
@@ -183,7 +189,6 @@ export default function initMap () {
     };
     sideCtl.addTo(map);
 
-    /* bouton ☰ – toujours visible */
     if (!document.querySelector('.sk-toggle-layers')){
       const toggleBtn = L.control({ position:'topright' });
       toggleBtn.onAdd = () => {
@@ -205,28 +210,30 @@ export default function initMap () {
     }
   }
 
-  /* 7. Applique opacité --------------------------------------------------- */
+  // =============================
+  // APPLICATION DE L’OPACITÉ
+  // =============================
   function applyOpacity(){
     const polyVal = parseFloat(document.getElementById('poly-op')?.value || 1);
     const dataVal = parseFloat(document.getElementById('data-op')?.value || 1);
 
-    /* polygone(s) projet affiché(s) */
     map.eachLayer(l=>{
       if (l instanceof L.Path && !(l instanceof L.CircleMarker) && l.feature){
         l.setStyle?.({ fillOpacity:polyVal, opacity:polyVal });
       }
     });
 
-    /* couches de données */
     Object.values(overlayLayers).forEach(o=>{
-      if (o.layer?.setOpacity) o.layer.setOpacity(dataVal);     // WMS
+      if (o.layer?.setOpacity) o.layer.setOpacity(dataVal);
       else o.layer?.eachLayer?.(l=>{
         if (l instanceof L.CircleMarker) l.setStyle({ fillOpacity:dataVal, opacity:dataVal });
       });
     });
   }
 
-  /* 8. Gestion fonds / données ------------------------------------------- */
+  // =============================
+  // SÉLECTEURS DE FONDS ET COUCHES
+  // =============================
   document.addEventListener('change', e=>{
     const t=e.target;
     if (t.name==='base'){
@@ -235,29 +242,32 @@ export default function initMap () {
     }
     if (t.dataset.ov){
       const o=overlayLayers[t.dataset.ov]; if(!o)return;
-
       if(t.checked){
         map.addLayer(o.layer);
-
-        /* légendes conditionnelles */
         if(t.dataset.ov==='Zones à bâtir') bauzonenLegend.addTo(map);
         if(t.dataset.ov==='Affectation du sol') landuseLegend.addTo(map);
-
       }else{
         map.removeLayer(o.layer);
-
         if(t.dataset.ov==='Zones à bâtir') map.removeControl(bauzonenLegend);
         if(t.dataset.ov==='Affectation du sol') map.removeControl(landuseLegend);
       }
     }
   });
 
-  /* 9. Tooltip POI -------------------------------------------------------- */
+  // =============================
+  // TOOLTIP POUR POI
+  // =============================
   function poiTip(t={}){
     const n=t.name||'(sans nom)'; const st=t['addr:street']||''; const num=t['addr:housenumber']||'';
     return st ? `${n} – ${st}${num ? ' '+num : ''}` : n;
   }
 
-  /* 10. Fin --------------------------------------------------------------- */
+    // Ajoute l'échelle
+  L.control.scale({ position: 'bottomleft', metric: true, imperial: false }).addTo(map);
+
+
+  // =============================
+  // RETOURNE LA CARTE
+  // =============================
   return map;
 }
