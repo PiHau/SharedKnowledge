@@ -30,7 +30,7 @@ Les résultats collectés seront anonymisés, agrégés et discutés dans le rap
 3. Cliquer sur un point de la carte pour afficher le panneau descriptif.
 4. Noter le projet, ajouter éventuellement une remarque, puis valider.
 5. Répéter l’opération sur autant de points que souhaité.
-6. Facultatif : renseigner son e‑mail pour recevoir la synthèse finale.
+6. Facultatif : renseigner son e‑mail pour recevoir la synthèse finale. Aucune obligation de laisser son adresse mail.
 
 Aucune création de compte n’est nécessaire ; aucune donnée personnelle n’est collectée en dehors d’un e‑mail opt‑in.
 
