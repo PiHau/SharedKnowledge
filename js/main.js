@@ -70,10 +70,10 @@ function showDisclaimer() {
   scroll.append('section').html(`
     <h3>Utilisation</h3>
       <ul>
-      <li>3 notes Likert + 1 phrase affirmative (max. 100 mots).</li>
-      <li>Aucune question ouverte : les phrases sont analysées par text-mining.</li>
+      <li>5 notes Likert + 1 phrase affirmative (max. 100 mots).</li>
+      <li>Commentaires possibles : les phrases sont analysées par text-mining.</li>
       <li>L’adresse e-mail est facultative (pour recevoir le rapport agrégé).</li>
-      <li>Pour chaque projet, vous pouvez accéder à la documentation et à des cartes supplémentaires.</li>
+      <li>Pour chaque projet, vous pouvez accéder à la documentation officielle et à des cartes thématiques supplémentaires qui permettent de contextualiser chaque projet.</li>
     </ul>
   `);
 
@@ -81,14 +81,8 @@ function showDisclaimer() {
     <h3>Résultats</h3>
     <p>Les notes sont agrégées, les phrases sont lues et analysées (SpaCy). Un rapport PDF sera envoyé aux participants ayant fourni
     leur e-mail.<br>
-    Cette expérimentation sert à évaluer le potentiel d’une telle plateforme pour encourager la participation et la compréhension des projets d’urbanisme.</p>
+    Cette expérimentation sert à évaluer le potentiel d’une telle plateforme pour encourager la participation et la compréhension des projets d’urbanisme.<strong> Il s'agit d'un projet uniquement académique<strong>, les résultats ne sont <strong> pas <strong> transmis aux urbanistes et n'auront pas d'impact réel sur les décisions. </p>
   
-  `);
-
-  scroll.append('section').html(`
-    <h3>Contexte scientifique</h3>
-    <p>Il s’agit d’un projet académique : les données ne seront pas publiées
-    individuellement, seulement analysées dans un cadre de recherche. Les réponses n'influeront pas les décisions, elles servent à explorer "ce qu'il est possible de faire".</p>
   `);
 
   scroll.append('section').html(`
