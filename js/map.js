@@ -92,60 +92,62 @@ export default function initMap () {
     return d;
   };
 
-  // =============================
-  // POINTS D’INTÉRÊT (POI) — RESTAURANTS, CAFÉS, ETC. 
-  // COULEUR UNIQUE POUR CHAQUE TYPE + PETIT RAYON
-  // =============================
-  const poiConfig = {
-    'Restaurants': { key:'restaurant', color:'#ff5252' },   // rouge
-    'Cafés'      : { key:'cafe',       color:'#7c40ff' },   // violet
-    'Bars / pubs': { key:'bar',        color:'#00b894' },   // vert
-    'Magasins'   : { key:'shop',       color:'#0099e5', isShop:true } // bleu
-  };
-  
-  const radiusAt = z => Math.max(2, 0.8 * (z - 7));
+ // =============================
+// POINTS D’INTÉRÊT (POI) — RESTAURANTS, CAFÉS, ETC. 
+// COULEUR UNIQUE POUR CHAQUE TYPE + PETIT RAYON
+// =============================
+const poiConfig = {
+  'Restaurants': { key: 'restaurant', color: '#ff5252' },   // rouge
+  'Cafés': { key: 'cafe', color: '#7c40ff' },              // violet
+  'Bars / pubs': { key: 'bar', color: '#00b894' },         // vert
+  'Magasins': { key: 'shop', color: '#0099e5', isShop: true } // bleu
+};
 
-  fetch('geojson_europe/poi.json')
-    .then(r => r.json())
-    .then(raw => {
-      const list = Array.isArray(raw) ? raw : raw.elements ?? null;
-      if (!list) { console.warn('poi.json non reconnu'); buildSidebar(); return; }
+const radiusAt = z => Math.max(2, 0.8 * (z - 7));
 
-      Object.entries(poiConfig).forEach(([lbl, cfg]) => {
-        const g = L.layerGroup([], { pane:'overlayPane' });
-        list.forEach(o => {
-          const t = o.tags || {};
-          if (cfg.isShop ? !t.shop : t.amenity !== cfg.key) return;
-          const lat = o.lat ?? o.center?.lat;
-          const lon = o.lon ?? o.center?.lon;
-          if (lat == null || lon == null) return;
-          g.addLayer(
-            L.circleMarker([lat, lon], {
-              radius: radiusAt(map.getZoom()),
-              color: cfg.color,
-              weight: 1,
-              fillColor: cfg.color,
-              fillOpacity: 0.85
-            }).bindTooltip(poiTip(t), { direction:'top', offset:[0,-8] })
-          );
-        });
-        overlayLayers[lbl] = { layer: g, color: cfg.color };
-      });
-
+fetch('geojson_europe/poi.json')
+  .then(r => r.json())
+  .then(raw => {
+    const list = Array.isArray(raw) ? raw : raw.elements ?? null;
+    if (!list) {
+      console.warn('poi.json non reconnu');
       buildSidebar();
-      updateCircleSize(map.getZoom());
-    })
-    .catch(err => { console.error('Erreur poi.json', err); buildSidebar(); });
+      return;
+    }
 
-  map.on('zoomend', () => updateCircleSize(map.getZoom()));
-  function updateCircleSize(z){
-    Object.values(overlayLayers).forEach(o=>{
-      o.layer?.eachLayer?.(l=>{
-        if (l instanceof L.CircleMarker) l.setRadius(radiusAt(z));
+    Object.entries(poiConfig).forEach(([lbl, cfg]) => {
+      const group = L.layerGroup([], { pane: 'overlayPane' });
+      list.forEach(o => {
+        const t = o.tags || {};
+        if (cfg.isShop ? !t.shop : t.amenity !== cfg.key) return;
+        const lat = o.lat ?? o.center?.lat;
+        const lon = o.lon ?? o.center?.lon;
+        if (lat == null || lon == null) return;
+        group.addLayer(
+          L.circleMarker([lat, lon], {
+            radius: radiusAt(map.getZoom()),
+            color: cfg.color,
+            weight: 1,
+            fillColor: cfg.color,
+            fillOpacity: 0.85
+          })
+          .bindTooltip(poiTip(t), { 
+            direction: 'top',
+            offset: [0, -8],
+            pane: 'popupPane' // Pour que les tooltips soient au-dessus
+          })
+        );
       });
+      overlayLayers[lbl] = { layer: group, color: cfg.color };
     });
-  }
 
+    buildSidebar();
+    updateCircleSize(map.getZoom());
+  })
+  .catch(err => {
+    console.error('Erreur poi.json', err);
+    buildSidebar();
+  });
   // =============================
   // CONSTRUCTION DE LA SIDEBAR
   // =============================
