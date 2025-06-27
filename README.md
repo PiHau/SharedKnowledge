@@ -11,7 +11,7 @@ Ce prototype s’inscrit dans les trois axes de recherche détaillés dans le m�
 
 1. **Transparence de l’information** – fournir aux habitants des documents clairs et suivre publiquement l’évolution de la consultation.
 2. **Inclusion élargie** – permettre une participation rapide, sans inscription et accessible depuis n’importe quel appareil.
-3. **Prise en compte effective des contributions** – analyser en continu les réponses et les restituer sous forme d’indicateurs compréhensibles.
+3. **Prise en compte effective des contributions** – analyser en continu les réponses et les restituer sous forme de retours simples  et compréhensibles.
 
 Les résultats collectés seront anonymisés, agrégés et discutés dans le rapport final du mémoire.
 
