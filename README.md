@@ -39,7 +39,7 @@ Aucune création de compte n’est nécessaire ; aucune donnée personnelle n�
 ---
 
 ## Valeurs et aspirations du projet
-- **Simple** : moins d’une minute pour contribuer.
+- **Simple** : moins de 5 minutes pour contribuer.
 - **Transparent** : chaque contribution est prise en compte et chaque contributeur reçoit un feedback.
 - **Respectueux** : aucune trace nominative, e‑mail séparé des réponses et supprimé après envoi du rapport.
 
