@@ -9,6 +9,9 @@ export default function initMap () {
   const map = L.map('map', { center:[46.52, 6.63], zoom:12 });
   map.createPane('overlayPane');
   map.getPane('overlayPane').style.zIndex = 650;
+  map.createPane('popupPane');
+  map.getPane('popupPane').style.zIndex = 1000;
+
 
   // =============================
   // FONDS DE CARTE
