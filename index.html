@@ -14,16 +14,29 @@
 
   <!-- Styles principaux -->
   <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Google Translate -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'fr',
+        includedLanguages: 'en,de,it,es',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 
 <body>
   <!-- ===========================
        EN-TÊTE : LOGOS ET NAVIGATION
   ============================ -->
-  <header class="sk-header">
+  <header class="sk-header" style="display: flex; justify-content: space-between; align-items: center;">
     <a href="/" class="sk-logo sk-logo-1" aria-label="Accueil">
       <img src="png/logo1.png" alt="SharedKnowledge – Plateforme d’urbanisme participatif" />
     </a>
+    <div id="google_translate_element" style="margin-right: 1rem;"></div>
   </header>
 
   <!-- ===========================
@@ -31,9 +44,7 @@
   ============================ -->
   <main class="sk-main">
 
-    <!-- ===========================
-         COLONNE GAUCHE : LISTE DES PROJETS
-    ============================ -->
+    <!-- COLONNE GAUCHE : LISTE DES PROJETS -->
     <aside id="project-list">
       <h2>Projets</h2>
       <ul id="projects">
@@ -49,34 +60,26 @@
       </ul>
     </aside>
 
-    <!-- ===========================
-         CARTE + PANNEAU INFO
-    ============================ -->
+    <!-- CARTE + PANNEAU INFO -->
     <div class="sk-map-container">
       <div id="map" class="sk-map"></div>
       <div id="info" class="sk-info">
         <h2>Contexte – Projet d’agglomération Lausanne-Morges (PALM)</h2>
         <p>
- La région lausannoise est située au coeur du canton de Vaud, en Suisse romande. Elle englobe la ville de Lausanne et environ 65 communes voisines, formant une grande agglomération urbaine autour du lac Léman. Fin 2024, on estime la population de l’agglomération à environ 456000 habitants, dont 145000 pour la ville de Lausanne elle-même. Cette région présente une forte densité urbaine, avec de nombreux quartiers résidentiels, des pôles économiques et de vastes espaces verts. Les principales communes voisines incluent Renens, Prilly, Ecublens, Pully, Morges, Crissier et Epalinges. L’agglomération couvre une zone allant du lac Léman jusqu’aux premiers contreforts du Jura, sur une superficie totale d’environ 230 kilomètres carrés. C’est un territoire dynamique, attractif pour les étudiants, les familles et les entreprises, marqué par une grande diversité culturelle et une croissance démographique soutenue.
+          La région lausannoise est située au coeur du canton de Vaud, en Suisse romande. Elle englobe la ville de Lausanne et environ 65 communes voisines, formant une grande agglomération urbaine autour du lac Léman. Fin 2024, on estime la population de l’agglomération à environ 456000 habitants, dont 145000 pour la ville de Lausanne elle-même. Cette région présente une forte densité urbaine, avec de nombreux quartiers résidentiels, des pôles économiques et de vastes espaces verts. Les principales communes voisines incluent Renens, Prilly, Ecublens, Pully, Morges, Crissier et Epalinges. L’agglomération couvre une zone allant du lac Léman jusqu’aux premiers contreforts du Jura, sur une superficie totale d’environ 230 kilomètres carrés. C’est un territoire dynamique, attractif pour les étudiants, les familles et les entreprises, marqué par une grande diversité culturelle et une croissance démographique soutenue.
         </p>
       </div>
     </div>
 
-    <!-- ===========================
-         BARRE LATÉRALE : QUESTIONNAIRE
-    ============================ -->
+    <!-- BARRE LATÉRALE : QUESTIONNAIRE -->
     <aside id="sidebar" class="sk-sidebar" hidden></aside>
 
   </main>
 
-  <!-- ===========================
-       PIED DE PAGE
-  ============================ -->
+  <!-- PIED DE PAGE -->
   <footer class="sk-footer">© 2025 SharedKnowledge - Pierre Hauptmann, UNIL, FGSE</footer>
 
-  <!-- ===========================
-       SCRIPT PRINCIPAL
-  ============================ -->
+  <!-- SCRIPT PRINCIPAL -->
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
