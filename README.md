@@ -1,44 +1,60 @@
 # SharedKnowledge
 
-Plateforme web de participation citoyenne **développée dans le cadre d’un mémoire de master** consacré à la participation numérique en urbanisme dans l’agglomération Lausanne‑Morges.
+Plateforme web de participation citoyenne développée dans le cadre d’un mémoire de master consacré à la participation numérique en urbanisme dans l’agglomération Lausanne‑Morges.
 
-> **Objet du mémoire** : expérimenter un dispositif en ligne qui améliore la transparence, l’inclusion et l’intégration des avis citoyens au cours de l’élaboration des projets urbains.
+> Objet du mémoire : expérimenter un dispositif en ligne qui améliore la transparence, l’inclusion et l’intégration des avis citoyens au cours de l’élaboration des projets urbains.
 
 ---
 
 ## Contexte académique
-Ce prototype s’inscrit dans les trois axes de recherche détaillés dans le mémoire :
 
-1. **Transparence de l’information** – fournir aux habitants des documents clairs et suivre publiquement l’évolution de la consultation.
-2. **Inclusion élargie** – permettre une participation rapide, sans inscription et accessible depuis n’importe quel appareil.
-3. **Prise en compte effective des contributions** – analyser en continu les réponses et les restituer sous forme de retours simples  et compréhensibles.
+Ce prototype s’inscrit dans trois axes de recherche :
+1. **Transparence de l’information** – documents clairs et restitution publique de la consultation.  
+2. **Inclusion élargie** – participation rapide, sans inscription, accessible sur tous les appareils.  
+3. **Prise en compte effective des contributions** – analyse continue des réponses et retour synthétique aux participants.
 
-Les résultats collectés seront anonymisés, agrégés et discutés dans le rapport final du mémoire.
+Les résultats collectés sont **anonymisés** et **agrégés**. Le projet est un **prototype académique** (sans effet décisionnel direct).
 
 ---
 
 ## Principes de l’application
-- **Carte interactive** : les urbanistes placent les points de consultation ; les citoyen·ne·s ne peuvent pas en créer.
-- **Questionnaire express** : trois échelles de Likert (pertinence, urgence, qualité) et un champ remarque de 140 caractères.
-- **Visualisation instantanée** : un histogramme D3 reflète à tout moment la tendance globale.
-- **Opt‑in e‑mail** : chacun peut laisser une adresse pour recevoir automatiquement le rapport agrégé.
+
+- **Carte interactive** : les urbanistes placent les points consultés ; les citoyen·ne·s ne créent pas de points.
+- **Questionnaire express** : trois échelles de Likert (pertinence, urgence, qualité) + un champ remarque (140 caractères).
+- **Visualisation instantanée** : un histogramme D3 reflète en direct la tendance globale.
+- **Opt‑in e‑mail** : adresse facultative pour recevoir le rapport agrégé (stockée séparément des réponses).
 
 ---
 
-## Utiliser l’application en tant que participant
-1. Ouvrir l’URL fournie.
-3. Cliquer sur un point de la carte pour afficher le panneau descriptif.
-4. Noter le projet, ajouter éventuellement une remarque, puis valider.
-5. Répéter l’opération sur autant de points que souhaité.
-6. Facultatif : renseigner son e‑mail pour recevoir la synthèse finale. Aucune obligation de laisser son adresse mail.
+## Utiliser l’application (participant)
 
-Aucune création de compte n’est nécessaire ; aucune donnée personnelle n’est collectée en dehors d’un e‑mail opt‑in.
+1. Ouvrir l’URL de la consultation.  
+2. Cliquer sur un point de la carte pour afficher le panneau descriptif.  
+3. Noter le projet, ajouter éventuellement une remarque, puis **valider**.  
+4. Répéter l’opération sur autant de points que souhaité.  
+5. *(Facultatif)* Renseigner son e‑mail pour recevoir la synthèse finale.
+
+> Aucune création de compte n’est nécessaire ; aucune donnée personnelle n’est collectée en dehors d’un e‑mail opt‑in.
 
 ---
 
+## Aperçu (captures d’écran)
+
+### Disclaimer
+![Capture du disclaimer](jpg/disclaimer.jpg "Aperçu du bandeau/encadré de disclaimer affiché aux participantes et participants")
+
+### Carte interactive
+![Capture de la carte](jpg/carte.jpg "Aperçu de la carte avec les points de consultation")
+
 ---
 
-## Valeurs et aspirations du projet
+## Valeurs et aspirations
+
+- **Simple** : < 5 minutes pour contribuer.  
+- **Transparent** : chaque contribution est prise en compte ; chacun reçoit un feedback.  
+- **Respectueux** : aucune trace nominative ; l’e‑mail (si donné) est séparé des réponses et supprimé après envoi du rapport.
+
+
 - **Simple** : moins de 5 minutes pour contribuer.
 - **Transparent** : chaque contribution est prise en compte et chaque contributeur reçoit un feedback.
 - **Respectueux** : aucune trace nominative, e‑mail séparé des réponses et supprimé après envoi du rapport.
