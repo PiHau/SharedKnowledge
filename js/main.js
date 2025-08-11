@@ -332,7 +332,7 @@ window.addEventListener('DOMContentLoaded',()=>{
           feature.geometry.type === "MultiLineString"
         ) {
           return {
-            color: '#e90808',     // ← Rouge vif (contour)
+            color: '#e90808',     // Rouge vif (contour)
             weight: 2,
             fill: false,
             fillOpacity: 0
@@ -340,8 +340,8 @@ window.addEventListener('DOMContentLoaded',()=>{
         }
         // Pour les polygones
         return {
-          color: '#e90808',      // ← Rouge vif (contour)
-          fillColor: '#e90808',  // ← Rouge vif (remplissage)
+          color: '#e90808',      // Rouge vif (contour)
+          fillColor: '#e90808',  // Rouge vif (remplissage)
           weight: 2,
           fillOpacity: 0.3
         };
