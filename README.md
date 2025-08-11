@@ -41,10 +41,10 @@ Les résultats collectés sont **anonymisés** et **agrégés**. Le projet est u
 ## Aperçu (captures d’écran)
 
 ### Disclaimer
-![Capture du disclaimer](jpg/disclaimer.png "Aperçu du bandeau/encadré de disclaimer affiché aux participantes et participants")
+![Capture du disclaimer](png/disclaimer.png "Aperçu du bandeau/encadré de disclaimer affiché aux participantes et participants")
 
 ### Carte interactive
-![Capture de la carte](jpg/carte.png "Aperçu de la carte avec les points de consultation")
+![Capture de la carte](png/carte.png "Aperçu de la carte avec les points de consultation")
 
 ---
 
