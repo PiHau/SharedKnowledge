@@ -9,9 +9,9 @@ Plateforme web de participation citoyenne développée dans le cadre d’un mém
 ## Contexte académique
 
 Ce prototype s’inscrit dans trois axes de recherche :
-1. **Transparence de l’information** – documents clairs et restitution publique de la consultation.  
-2. **Inclusion élargie** – participation rapide, sans inscription, accessible sur tous les appareils.  
-3. **Prise en compte effective des contributions** – analyse continue des réponses et retour synthétique aux participants.
+1. **Transparence de l’information** - documents clairs et restitution publique de la consultation.  
+2. **Inclusion élargie** - participation rapide, sans inscription, accessible sur tous les appareils.  
+3. **Prise en compte effective des contributions** - analyse continue des réponses et retour synthétique aux participants.
 
 Les résultats collectés sont **anonymisés** et **agrégés**. Le projet est un **prototype académique** (sans effet décisionnel direct).
 
