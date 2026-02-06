@@ -267,7 +267,7 @@ fetch('geojson_europe/poi.json')
     return st ? `${n} – ${st}${num ? ' '+num : ''}` : n;
   }
 
-    // Ajoute l'échelle
+    // Ajouter l'échelle
   L.control.scale({ position: 'bottomleft', metric: true, imperial: false }).addTo(map);
 
 
