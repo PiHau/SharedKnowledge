@@ -318,7 +318,6 @@ window.addEventListener('DOMContentLoaded',()=>{
 
       map.eachLayer(l => { if(l.feature) map.removeLayer(l); });
 
-         // ... tout ton code d'avant ...
 
  
   fetch(`geojson_europe/${file}`)
